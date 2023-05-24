@@ -9,6 +9,7 @@ import com.bcmp.entidades.Filme;
 import com.bcmp.entidades.Locacao;
 import com.bcmp.entidades.Usuario;
 import com.bcmp.utils.DataUtils;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class LocacaoService {
@@ -43,8 +44,8 @@ public class LocacaoService {
 		Locacao locacao = service.alugarFilme(usuario, filme);
 
 		//verificacao
-		System.out.println(locacao.getValor() == 5.0);
-		System.out.println(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-		System.out.println(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)));
+		Assert.assertTrue(locacao.getValor() == 5.0);
+		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
+		Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)));
 	}
 }
