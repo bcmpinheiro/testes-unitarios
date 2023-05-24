@@ -1,4 +1,4 @@
-package com.bcmp.entidades;
+package com.bcmp.entity;
 
 public class Usuario {
 
