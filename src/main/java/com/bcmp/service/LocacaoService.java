@@ -8,12 +8,24 @@ import com.bcmp.entity.Filme;
 import com.bcmp.entity.Locacao;
 import com.bcmp.entity.Usuario;
 import com.bcmp.exceptions.FilmeSemEstoqueException;
+import com.bcmp.exceptions.LocadoraException;
 
 public class LocacaoService {
 
-	public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception {
-		if(filme.getEstoque() == 0)
+	public Locacao alugarFilme(Usuario usuario, Filme filme) throws FilmeSemEstoqueException, LocadoraException {
+
+		if(usuario == null) {
+			throw new LocadoraException("Usuario Vazio");
+		}
+
+		if(filme == null) {
+			throw new LocadoraException("Filme Vazio");
+		}
+
+		if (filme.getEstoque() == 0) {
 			throw new FilmeSemEstoqueException();
+		}
+
 
 		Locacao locacao = new Locacao();
 		locacao.setFilme(filme);

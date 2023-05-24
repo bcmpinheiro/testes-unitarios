@@ -4,6 +4,7 @@ import com.bcmp.entity.Filme;
 import com.bcmp.entity.Locacao;
 import com.bcmp.entity.Usuario;
 import com.bcmp.exceptions.FilmeSemEstoqueException;
+import com.bcmp.exceptions.LocadoraException;
 import com.bcmp.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -53,6 +54,7 @@ public class LocacaoServiceTest {
         error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), CoreMatchers.is(true));
     }
 
+    //forma elegante
     @Test(expected = FilmeSemEstoqueException.class)
     public void testLocacao_filmeSemEstoque() throws Exception {
 
@@ -63,5 +65,45 @@ public class LocacaoServiceTest {
 
         //acao
        service.alugarFilme(usuario, filme);
+    }
+
+    //forma robusta: apenas essa forma consegue imprimir algo após algo ser processado
+    //ela segura a excecao e verifica tanto a excecao quanto a forma enviada
+    //após ela posso fazer mais tratativas
+    @Test
+    public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
+
+        //cenario
+        LocacaoService service = new LocacaoService();
+        Filme filme = new Filme("Filme 2", 1, 4.0);
+
+        //acao
+        try {
+            service.alugarFilme(null, filme);
+            Assert.fail();
+        } catch (LocadoraException e) {
+            Assert.assertThat(e.getMessage(), CoreMatchers.is("Usuario Vazio"));
+        }
+
+        System.out.println("Forma Robusta");
+    }
+
+    //forma nova: lanca para o junit fazer os tratamentos, porem ela avisa o junit o que ela esta esperando
+    //dessa maneira o junit nao coloca mensagem nenhuma
+    //a partir das excecoes ele consegue validar e colocar que os testes foram com sucesso
+    @Test
+    public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException{
+
+        //cenario
+        LocacaoService service = new LocacaoService();
+        Usuario usuario = new Usuario("Usuario 01");
+
+        exception.expect(LocadoraException.class);
+        exception.expectMessage("Filme Vazio");
+
+        //acao
+        service.alugarFilme(usuario, null);
+
+        System.out.println("Forma Nova");
     }
 }
