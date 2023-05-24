@@ -7,12 +7,13 @@ import java.util.Date;
 import com.bcmp.entity.Filme;
 import com.bcmp.entity.Locacao;
 import com.bcmp.entity.Usuario;
+import com.bcmp.exceptions.FilmeSemEstoqueException;
 
 public class LocacaoService {
 
 	public Locacao alugarFilme(Usuario usuario, Filme filme) throws Exception {
 		if(filme.getEstoque() == 0)
-			throw new Exception("Filme sem estoque");
+			throw new FilmeSemEstoqueException();
 
 		Locacao locacao = new Locacao();
 		locacao.setFilme(filme);

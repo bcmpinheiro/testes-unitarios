@@ -3,6 +3,7 @@ package com.bcmp.service;
 import com.bcmp.entity.Filme;
 import com.bcmp.entity.Locacao;
 import com.bcmp.entity.Usuario;
+import com.bcmp.exceptions.FilmeSemEstoqueException;
 import com.bcmp.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
@@ -52,7 +53,7 @@ public class LocacaoServiceTest {
         error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), CoreMatchers.is(true));
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = FilmeSemEstoqueException.class)
     public void testLocacao_filmeSemEstoque() throws Exception {
 
         //cenario
@@ -62,37 +63,5 @@ public class LocacaoServiceTest {
 
         //acao
        service.alugarFilme(usuario, filme);
-    }
-
-    @Test
-    public void testLocacao_filmeSemEstoque_2() {
-
-        //cenario
-        LocacaoService service = new LocacaoService();
-        Usuario usuario = new Usuario("Usuario 01");
-        Filme filme = new Filme("Filme 01", 0, 5.0);
-
-        //acao
-        try {
-            service.alugarFilme(usuario, filme);
-            Assert.fail("Deveria ter lancado uma excecao");
-        } catch (Exception e) {
-            Assert.assertThat(e.getMessage(),CoreMatchers.is("Filme sem estoque"));
-        }
-    }
-
-    @Test
-    public void testLocacao_filmeSemEstoque_3() throws Exception {
-
-        //cenario
-        LocacaoService service = new LocacaoService();
-        Usuario usuario = new Usuario("Usuario 01");
-        Filme filme = new Filme("Filme 01", 0, 5.0);
-
-        exception.expect(Exception.class);
-        exception.expectMessage("Filme sem estoque");
-
-        //acao
-        service.alugarFilme(usuario, filme);
     }
 }
