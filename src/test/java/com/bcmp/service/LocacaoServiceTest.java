@@ -6,7 +6,9 @@ import com.bcmp.entity.Usuario;
 import com.bcmp.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ErrorCollector;
 
 import java.util.Date;
 
@@ -14,6 +16,9 @@ import static com.bcmp.utils.DataUtils.obterDataComDiferencaDias;
 import static org.hamcrest.CoreMatchers.not;
 
 public class LocacaoServiceTest {
+
+    @Rule
+    public ErrorCollector error = new ErrorCollector();
 
     @Test
     public void testeLocacao() {
@@ -29,10 +34,16 @@ public class LocacaoServiceTest {
         //verificacao
         Assert.assertEquals(5.0, locacao.getValor(), 0.01);
         Assert.assertThat(locacao.getValor(), CoreMatchers.is(5.0));
+        error.checkThat(locacao.getValor(), CoreMatchers.is(5.0));
+
         Assert.assertThat(locacao.getValor(), CoreMatchers.is(not(6.0)));
+
         Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
         Assert.assertThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
+        error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
+
         Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)));
         Assert.assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), CoreMatchers.is(true));
+        error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), CoreMatchers.is(true));
     }
 }
