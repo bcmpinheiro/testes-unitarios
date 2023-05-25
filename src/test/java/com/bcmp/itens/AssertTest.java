@@ -1,4 +1,4 @@
-package com.bcmp.service;
+package com.bcmp.itens;
 
 import com.bcmp.entity.Usuario;
 import org.junit.Assert;
@@ -36,9 +36,5 @@ public class AssertTest {
 
         Assert.assertNull(u3);
         Assert.assertNotNull(u2);
-
-
-
-
     }
 }
