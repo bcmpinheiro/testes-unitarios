@@ -7,9 +7,7 @@ import com.bcmp.exceptions.FilmeSemEstoqueException;
 import com.bcmp.exceptions.LocadoraException;
 import com.bcmp.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
 
@@ -21,14 +19,22 @@ import static org.hamcrest.CoreMatchers.not;
 
 public class LocacaoServiceTest {
 
+    private LocacaoService service;
+
     @Rule
     public ErrorCollector error = new ErrorCollector();
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
 
+    @Before
+    public void setup() {
+        service = new LocacaoService();
+    }
+
+
     @Test
-    public void testeLocacao() throws Exception {
+    public void testLocacao() throws Exception {
 
         //cenario
         LocacaoService service = new LocacaoService();
@@ -59,7 +65,6 @@ public class LocacaoServiceTest {
     public void testLocacao_filmeSemEstoque() throws Exception {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 01");
         Filme filme = new Filme("Filme 01", 0, 5.0);
 
@@ -74,7 +79,6 @@ public class LocacaoServiceTest {
     public void testLocacao_usuarioVazio() throws FilmeSemEstoqueException {
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Filme filme = new Filme("Filme 2", 1, 4.0);
 
         //acao
@@ -85,17 +89,16 @@ public class LocacaoServiceTest {
             Assert.assertThat(e.getMessage(), CoreMatchers.is("Usuario Vazio"));
         }
 
-        System.out.println("Forma Robusta");
+        //System.out.println("Forma Robusta");
     }
 
     //forma nova: lanca para o junit fazer os tratamentos, porem ela avisa o junit o que ela esta esperando
     //dessa maneira o junit nao coloca mensagem nenhuma
     //a partir das excecoes ele consegue validar e colocar que os testes foram com sucesso
     @Test
-    public void testLocacao_FilmeVazio() throws FilmeSemEstoqueException, LocadoraException{
+    public void testLocacao_filmeVazio() throws FilmeSemEstoqueException, LocadoraException{
 
         //cenario
-        LocacaoService service = new LocacaoService();
         Usuario usuario = new Usuario("Usuario 01");
 
         exception.expect(LocadoraException.class);
@@ -104,6 +107,6 @@ public class LocacaoServiceTest {
         //acao
         service.alugarFilme(usuario, null);
 
-        System.out.println("Forma Nova");
+        //System.out.println("Forma Nova");
     }
 }
