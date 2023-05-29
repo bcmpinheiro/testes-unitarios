@@ -42,14 +42,17 @@ public class ValorLocacaoTest {
     private static Filme filme4 = new Filme("Filme 4", 2, 4.00);
     private static Filme filme5 = new Filme("Filme 5", 2, 4.00);
     private static Filme filme6 = new Filme("Filme 6", 2, 4.00);
+    private static Filme filme7 = new Filme("Filme 6", 2, 4.00);
 
     @Parameterized.Parameters(name = "{2}")
     public static Collection<Object[]> getParametros() {
         return Arrays.asList(new Object[][]{
+                {Arrays.asList(filme1, filme2), 8.00, "2 Filmes: Sem Desconto"},
                 {Arrays.asList(filme1, filme2, filme3), 11.00, "3 Filmes: 25%"},
                 {Arrays.asList(filme1, filme2, filme3, filme4), 13.00, "4 Filmes: 50%"},
                 {Arrays.asList(filme1, filme2, filme3, filme4, filme5), 14.00, "5 Filmes: 75%"},
-                {Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6), 14.00, "6 Filmes: 100%"}
+                {Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6), 14.00, "6 Filmes: 100%"},
+                {Arrays.asList(filme1, filme2, filme3, filme4, filme5, filme6, filme7), 18.00, "7 Filmes: Sem Desconto"}
         });
     }
 
