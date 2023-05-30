@@ -5,17 +5,18 @@ import com.bcmp.entity.Locacao;
 import com.bcmp.entity.Usuario;
 import com.bcmp.exceptions.FilmeSemEstoqueException;
 import com.bcmp.exceptions.LocadoraException;
+import com.bcmp.matchers.MatchersProprios;
 import com.bcmp.utils.DataUtils;
 import org.hamcrest.CoreMatchers;
 import org.junit.*;
 import org.junit.rules.ErrorCollector;
 import org.junit.rules.ExpectedException;
-
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
+import static com.bcmp.matchers.MatchersProprios.ehHoje;
+import static com.bcmp.matchers.MatchersProprios.ehHojeComDiferencaDias;
 import static com.bcmp.utils.DataUtils.obterDataComDiferencaDias;
 
 
@@ -47,19 +48,9 @@ public class LocacaoServiceTest {
         Locacao locacao = service.alugarFilme(usuario, filmes);
 
         //verificacao
-        Assert.assertEquals(5.0, locacao.getValor(), 0.01);
-        Assert.assertThat(locacao.getValor(), CoreMatchers.is(5.0));
         error.checkThat(locacao.getValor(), CoreMatchers.is(5.0));
-
-        Assert.assertThat(locacao.getValor(), CoreMatchers.is(CoreMatchers.not(6.0)));
-
-        Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()));
-        Assert.assertThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
-        error.checkThat(DataUtils.isMesmaData(locacao.getDataLocacao(), new Date()), CoreMatchers.is(true));
-
-        Assert.assertTrue(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)));
-        Assert.assertThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), CoreMatchers.is(true));
-        error.checkThat(DataUtils.isMesmaData(locacao.getDataRetorno(), obterDataComDiferencaDias(1)), CoreMatchers.is(true));
+        error.checkThat(locacao.getDataLocacao(), ehHoje());
+        error.checkThat(locacao.getDataRetorno(), ehHojeComDiferencaDias(1));
     }
 
     //forma elegante
@@ -124,7 +115,8 @@ public class LocacaoServiceTest {
         Locacao retorno = service.alugarFilme(usuario, filmes);
 
         //verificacao
-        boolean ehSegunda = DataUtils.verificarDiaSemana(retorno.getDataRetorno(), Calendar.MONDAY);
-        Assert.assertTrue(ehSegunda);
+        //Assert.assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
+        //Assert.assertThat(retorno.getDataRetorno(), MatchersProprios.caiEm(Calendar.MONDAY));
+        Assert.assertThat(retorno.getDataRetorno(), MatchersProprios.caiNumaSegunda());
     }
 }
