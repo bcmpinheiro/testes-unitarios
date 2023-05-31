@@ -1,5 +1,6 @@
 package com.bcmp.service;
 
+import buildermaster.BuilderMaster;
 import builders.FilmeBuilder;
 import builders.UsuarioBuilder;
 import com.bcmp.entity.Filme;
@@ -119,5 +120,9 @@ public class LocacaoServiceTest {
         //Assert.assertThat(retorno.getDataRetorno(), new DiaSemanaMatcher(Calendar.MONDAY));
         //Assert.assertThat(retorno.getDataRetorno(), MatchersProprios.caiEm(Calendar.MONDAY));
         Assert.assertThat(retorno.getDataRetorno(), MatchersProprios.caiNumaSegunda());
+    }
+
+    public static void main(String[] args) {
+        new BuilderMaster().gerarCodigoClasse(Locacao.class);
     }
 }
